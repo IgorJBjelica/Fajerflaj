@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="igor.firefly.ResultsActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <Button
+                android:id="@+id/bla"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hnjo"
+                android:layout_gravity="end|top"
+                />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/coord"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/btnSimpleTabs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:text="@string/btn_event"
+            android:textSize="15sp"
+            android:layout_weight="0.10" />
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
