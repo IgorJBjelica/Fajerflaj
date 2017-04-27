@@ -1,11 +1,9 @@
 package igor.firefly;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +24,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private RatingBar mRatingBar;
     private Spinner mSpinner;
     private TextView mTextView;
+    private SeekBar mSeekBar;
     private List<Event> eventsList;
 
     @Override
@@ -37,8 +36,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mEditText2 = (EditText) findViewById(R.id.editText2);
         mEditText3 = (EditText) findViewById(R.id.editText3);
 
-        SeekBar mSeekBar = (SeekBar) findViewById(R.id.seekBar);
+        mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         mSeekBar.setOnSeekBarChangeListener(this);
+
         mTextView = (TextView) findViewById(R.id.textView3);
 
         mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
@@ -49,23 +49,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         mSpinner = (Spinner) findViewById(R.id.simple_spinner);
         loadSpinnerData();
-
-        try {
-            EventsHelper db = new EventsHelper(getApplicationContext());
-            Log.d("Reading: ", "Reading all events..");
-            eventsList = db.getAllEvents();
-
-            for (Event e : eventsList) {
-                String log = "Id: " + e.getId() + " ,Name: " + e.getName() + " ,Description: " + e.getDescription();
-                // Writing Contacts to log
-                Log.d("Name: ", log);
-            }
-
-            db.close();
-        }
-        catch(Exception ex){
-            showMessage("FUCK", ex.getMessage());
-        }
     }
 
     private void loadSpinnerData() {
@@ -88,22 +71,32 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.btnSearch:
                 searchEvents();
-                startActivity(new Intent(SearchActivity.this, EventsActivity.class));
                 break;
         }
     }
 
     private void searchEvents(){
         String freeText = mEditText.getText().toString();
-        int minPrice = Integer.parseInt(mEditText2.getText().toString());
-        int maxPrice = Integer.parseInt(mEditText3.getText().toString());
+        float minPrice = Float.parseFloat(mEditText2.getText().toString().equals("") ? "0": mEditText2.getText().toString());
+        float maxPrice = Float.parseFloat(mEditText3.getText().toString().equals("") ? "0": mEditText2.getText().toString());
         float popularity = mRatingBar.getRating();
         String tag = mSpinner.getSelectedItem().toString();
-        EventsHelper db = new EventsHelper(getApplicationContext());
+        float distance = mSeekBar.getProgress();
+        EventsHelper db = new EventsHelper(this);
 
-        List<Event> eventsList = db.searchEventsByName(freeText);
+        eventsList = db.searchEventsByName(freeText);
 
-        mEditText.setText(eventsList.get(0).getId() + eventsList.get(0).getName() + eventsList.get(0).getPrice());
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("list", (ArrayList<Event>) eventsList);
+        startActivity(new Intent(SearchActivity.this, ResultsActivity.class).putExtras(bundle));
+
+//        if(eventsList.isEmpty())
+//            showMessage("Nop", "prazna lista, nije dobro pokupio evente sa ovim imenom: " + freeText);
+//
+//        for (Event e : eventsList) {
+//            String text = e.getId() + e.getDescription();
+//            mEditText.setText(text);
+//        }
     }
 
     @Override

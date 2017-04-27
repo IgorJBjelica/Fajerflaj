@@ -85,8 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
 //      Load all Users
-        Log.d("Reading: ", "Reading all Users");
-        EventsHelper helper = new EventsHelper(getApplicationContext());
+        EventsHelper helper = new EventsHelper(this);
         List<User> userList = helper.getAllUsers();
         if(userList.isEmpty()) {
 //          If empty message
@@ -97,9 +96,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         for (User u : userList) {
             DUMMY_CREDENTIALS.add(u.getName() + ":" + u.getPass());
             DUMMY_CREDENTIALS.add(u.getEmail() + ":" + u.getPass());
-            String log = "Id: " + u.getId() + " ,Name: " + u.getName() + " ,Organizer: " + u.isOrgan();
-            // Writing Contacts to log
-            Log.d("User: ", log);
         }
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);

@@ -8,7 +8,6 @@ import android.os.Handler;
 import static igor.firefly.R.layout.activity_splash_screen;
 
 public class SplashScreen extends Activity {
-
     private static int SPLASH_TIME_OUT = 2500;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +19,7 @@ public class SplashScreen extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreen.this, LoginActivity.class);
-                startActivity(i);
-
+                startActivity(new Intent(SplashScreen.this, LoginActivity.class));
                 finish();
             }
         }, SPLASH_TIME_OUT);

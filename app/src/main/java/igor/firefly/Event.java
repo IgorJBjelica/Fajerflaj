@@ -1,10 +1,13 @@
 package igor.firefly;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Igor on 4/5/2017.
  */
 
-public class Event {
+public class Event implements Parcelable {
     private int id;
     private String name;
     private String description;
@@ -27,6 +30,17 @@ public class Event {
         this.setPopularity(popularity);
         this.setOrgan(organ_id);
         this.setTag(tag_id);
+    }
+
+    public Event(Parcel in) {
+        this.setId(in.readInt());
+        this.setName(in.readString());
+        this.setDescription(in.readString());
+        this.setAddress(in.readString());
+        this.setPrice(in.readFloat());
+        this.setPopularity(in.readFloat());
+        this.setOrgan(in.readInt());
+        this.setTag(in.readInt());
     }
 
     public int getId() {
@@ -92,4 +106,31 @@ public class Event {
     public void setTag(int tag_id) {
         this.tag_id = tag_id;
     }
+
+    public int describeContents() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeString(this.address);
+        dest.writeFloat(this.price);
+        dest.writeFloat(this.popularity);
+        dest.writeInt(this.organ_id);
+        dest.writeInt(this.tag_id);
+    }
+
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>()
+    {
+        public Event createFromParcel(Parcel in)
+        {
+            return new Event(in);
+        }
+        public Event[] newArray(int size)
+        {
+            return new Event[size];
+        }
+    };
 }
