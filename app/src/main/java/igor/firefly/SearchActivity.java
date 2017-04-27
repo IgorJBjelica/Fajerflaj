@@ -89,14 +89,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("list", (ArrayList<Event>) eventsList);
         startActivity(new Intent(SearchActivity.this, ResultsActivity.class).putExtras(bundle));
-
-//        if(eventsList.isEmpty())
-//            showMessage("Nop", "prazna lista, nije dobro pokupio evente sa ovim imenom: " + freeText);
-//
-//        for (Event e : eventsList) {
-//            String text = e.getId() + e.getDescription();
-//            mEditText.setText(text);
-//        }
     }
 
     @Override

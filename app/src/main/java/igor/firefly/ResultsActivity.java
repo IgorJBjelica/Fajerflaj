@@ -1,8 +1,8 @@
 package igor.firefly;
 
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -22,9 +22,18 @@ public class ResultsActivity extends AppCompatActivity {
         if(eventsList != null) {
             for (Event e : eventsList) {
                 Button btn_event = new Button(getApplicationContext());
+                btn_event.setId(e.getId());
                 btn_event.setText(e.getName());
                 ll.addView(btn_event);
             }
         }
+    }
+
+    private void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
     }
 }
