@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".ResultsActivity" />
         <activity android:name=".AddEvent" />
-
+        <activity android:name=".EventActivity"></activity>
     </application>
 
 </manifest>

@@ -56,6 +56,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         List<Tag> tags = db.getAllTags();
         List<String> tagsList = new ArrayList<>();
 
+        tagsList.add("Tip desavanja");
+
         for (Tag t: tags){
             tagsList.add(t.getName());
         }

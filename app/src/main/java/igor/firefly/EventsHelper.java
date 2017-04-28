@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,6 +222,29 @@ public class EventsHelper extends SQLiteOpenHelper {
         }catch (SQLiteException e){}
         return tagList;
     }
+
+    public List<User> searchUsers(String name, int id) {
+        List<User> usersList1 = getAllUsers();
+        List<User> usersList2 = new ArrayList<>();
+
+        for (User u: usersList1){
+            if (u.getName().equalsIgnoreCase(name) || u.getId() == id)
+                usersList2.add(u);
+        }
+        return usersList2;
+    }
+
+    public List<Tag> searchTags(String name, int id) {
+        List<Tag> tagsList1 = getAllTags();
+        List<Tag> tagsList2 = new ArrayList<>();
+
+        for (Tag t: tagsList1){
+            if (t.getName().equalsIgnoreCase(name) || t.getId() == id)
+                tagsList2.add(t);
+        }
+        return tagsList2;
+    }
+
 
     public List<Event> searchEventsByName(String name) {
         List<Event> eventsList1 = getAllEvents();

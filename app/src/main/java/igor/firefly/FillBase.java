@@ -1,6 +1,7 @@
 package igor.firefly;
 
 import android.app.Activity;
+import android.util.Log;
 
 /**
  * Created by Igor on 4/5/2017.
@@ -40,8 +41,10 @@ public class FillBase {
             tag.setName("Razonoda");
             db.insertTag(tag);
 
-//      Dodavanje jednog desavanja
+//      Dodavanje desavanja
+
             Event event = new Event();
+
             event.setName("Vukasin Brajic");
             event.setDescription("Vukasin Brajic pravi rok spektakl u Wurst Platz bar-u.");
             event.setAddress("Cumicevo Sokace bb");
@@ -49,6 +52,46 @@ public class FillBase {
             event.setPrice(3.5f);
             event.setOrgan(2);
             event.setTag(1);
+
+            db.insertEvent(event);
+
+            event.setName("Domacica");
+            event.setDescription("Domaci pop rok u KST-u. Kako da propustis?!");
+            event.setAddress("Bulevar kralja aleksandra 73");
+            event.setPopularity(4.6f);
+            event.setPrice(2.8f);
+            event.setOrgan(2);
+            event.setTag(1);
+
+            db.insertEvent(event);
+
+            event.setName("Beer pong turnir");
+            event.setDescription("Turnir u beer pongu!");
+            event.setAddress("Knez mihailova 48");
+            event.setPopularity(4.0f);
+            event.setPrice(3.3f);
+            event.setOrgan(2);
+            event.setTag(1);
+
+            db.insertEvent(event);
+
+            event.setName("Happy hour");
+            event.setDescription("Happy hour u Tramvaj-u.");
+            event.setAddress("Ruzveltova 2");
+            event.setPopularity(4.4f);
+            event.setPrice(3.0f);
+            event.setOrgan(2);
+            event.setTag(3);
+
+            db.insertEvent(event);
+
+            event.setName("Job fair");
+            event.setDescription("Sajam poslovanja! Pridruzite nam se.");
+            event.setAddress("Bulevar kralja aleksandra 73");
+            event.setPopularity(3.9f);
+            event.setPrice(0.0f);
+            event.setOrgan(2);
+            event.setTag(2);
 
             db.insertEvent(event);
         }
