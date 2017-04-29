@@ -212,18 +212,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="7dp"
+        android:gravity="center"
         android:weightSum="1"
         tools:context="igor.firefly.EventActivity">
 
         <TextView
             android:id="@+id/tv_Map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clickable="false"
             android:focusableInTouchMode="false"
+            android:paddingTop="25dp"
             android:text="GO TO MAP"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
