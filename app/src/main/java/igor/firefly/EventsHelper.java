@@ -257,6 +257,30 @@ public class EventsHelper extends SQLiteOpenHelper {
         return eventsList;
     }
 
+    public List<Event> searchEventsByAddress(List<Event> list, String address) {
+        List<Event> eventsList = new ArrayList<>();
+        address = address.trim();
+        address = address.toLowerCase();
+
+        for (Event e: list){
+            if (e.getAddress().equalsIgnoreCase(address) || e.getAddress().toLowerCase().contains(address))
+                eventsList.add(e);
+        }
+        return eventsList;
+    }
+
+    public List<Event> searchEventsByDescription(List<Event> list, String desc) {
+        List<Event> eventsList = new ArrayList<>();
+        desc = desc.trim();
+        desc = desc.toLowerCase();
+
+        for (Event e: list){
+            if (e.getDescription().equalsIgnoreCase(desc) || e.getDescription().toLowerCase().contains(desc))
+                eventsList.add(e);
+        }
+        return eventsList;
+    }
+
     public List<Event> searchEventsByPrice(List<Event> list, float min, float max) {
         List<Event> eventsList = new ArrayList<>();
 

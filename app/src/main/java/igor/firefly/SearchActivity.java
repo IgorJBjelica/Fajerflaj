@@ -121,8 +121,19 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             List<Event> eventsList = db.getAllEvents();
 
             String freeText = mEditText.getText().toString();
-            if (freeText.trim().isEmpty() || freeText.trim().equals(""))
-                eventsList = db.searchEventsByName(eventsList, freeText);
+            if (!freeText.trim().isEmpty() || !freeText.trim().equals("")) {
+                List<Event> list = db.searchEventsByName(eventsList, freeText);
+
+                for( Event e : db.searchEventsByAddress(eventsList, freeText))
+                    if(!list.contains(e))
+                        list.add(e);
+
+                for( Event e : db.searchEventsByDescription(eventsList, freeText))
+                    if(!list.contains(e))
+                        list.add(e);
+
+                eventsList = list;
+            }
 
             if (minPrice != 0 || maxPrice != 0)
                 eventsList = db.searchEventsByPrice(eventsList, minPrice, maxPrice);
