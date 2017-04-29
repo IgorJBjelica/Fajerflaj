@@ -245,17 +245,68 @@ public class EventsHelper extends SQLiteOpenHelper {
         return tagsList2;
     }
 
-
-    public List<Event> searchEventsByName(String name) {
-        List<Event> eventsList1 = getAllEvents();
-        List<Event> eventsList2 = new ArrayList<>();
+    public List<Event> searchEventsByName(List<Event> list, String name) {
+        List<Event> eventsList = new ArrayList<>();
         name = name.trim();
         name = name.toLowerCase();
 
-        for (Event e: eventsList1){
+        for (Event e: list){
             if (e.getName().equalsIgnoreCase(name) || e.getName().toLowerCase().contains(name))
-                eventsList2.add(e);
+                eventsList.add(e);
         }
-        return eventsList2;
+        return eventsList;
+    }
+
+    public List<Event> searchEventsByPrice(List<Event> list, float min, float max) {
+        List<Event> eventsList = new ArrayList<>();
+
+        if((min >= 0) && (max >= 0)) {
+            for (Event e : list) {
+                if ((e.getPrice() >= min) && (e.getPrice() <= max))
+                    eventsList.add(e);
+            }
+        }
+        else if((min >= 0) && (max <= 0)) {
+            for (Event e : list) {
+                if (e.getPrice() >= min)
+                    eventsList.add(e);
+            }
+        }
+        else if((min <= 0) && (max >= 0)) {
+            for (Event e : list) {
+                if (e.getPrice() <= max)
+                    eventsList.add(e);
+            }
+        }
+        else eventsList = list;
+
+        return eventsList;
+    }
+
+    public List<Event> searchEventsByPopularity(List<Event> list, float pop) {
+        List<Event> eventList = new ArrayList<>();
+
+        if(pop > 0) {
+            for (Event e : list) {
+                if (e.getPrice() >= pop)
+                    eventList.add(e);
+            }
+        }
+
+        return eventList;
+    }
+
+    public List<Event> searchEventsByTag(List<Event> list, String tagName) {
+        List<Event> eventList = new ArrayList<>();
+        Tag tag = searchTags(tagName, 0).get(0);
+
+        if(tag != null) {
+            for (Event e : list) {
+                if (e.getTag() == tag.getId())
+                    eventList.add(e);
+            }
+        }
+
+        return eventList;
     }
 }

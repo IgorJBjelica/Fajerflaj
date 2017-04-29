@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:contextClickable="false"
     android:orientation="vertical"
     android:paddingTop="15dp"
     android:weightSum="1"
@@ -213,7 +212,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:contextClickable="true"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="7dp"
@@ -221,7 +219,7 @@
         tools:context="igor.firefly.EventActivity">
 
         <TextView
-            android:id="@+id/tv_Type"
+            android:id="@+id/tv_Map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="false"
