@@ -1,7 +1,6 @@
 package igor.firefly;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,11 +8,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ResultsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private List<Event> eventsList;
+    private ArrayList<Event> eventsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +39,8 @@ public class ResultsActivity extends AppCompatActivity implements View.OnClickLi
             if(view.getId() == e.getId()) {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("event", e);
-                startActivity(new Intent(ResultsActivity.this, EventActivity.class).putExtras(bundle));
+                startActivity(new Intent(ResultsActivity.this, MapActivity.class).putExtras(bundle));
             }
         }
-    }
-
-    private void showMessage(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
     }
 }

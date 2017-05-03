@@ -1,0 +1,212 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="igor.firefly.MenuFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="igor.firefly.MapActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Name"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Name"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Address"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Address"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Description"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Description"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Popularity"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Popularity"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Price"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Price"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Organ"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Organizer"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewOrgan"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="15dp"
+            android:weightSum="1"
+            tools:context="igor.firefly.MapActivity">
+
+            <TextView
+                android:id="@+id/tv_Type"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:text="Type"
+                android:textAlignment="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewType"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:focusableInTouchMode="false"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

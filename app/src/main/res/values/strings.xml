@@ -27,4 +27,8 @@
     <!-- Strings related to results -->
     <string name="btn_event">Naziv</string>
     <string name="resetuj">Resetuj</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_gmaps">Map</string>
 </resources>
