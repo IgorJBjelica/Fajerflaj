@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
-public class ResultsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ResultsActivity extends AppCompatActivity {
 
     private ArrayList<Event> eventsList;
 
@@ -23,24 +23,21 @@ public class ResultsActivity extends AppCompatActivity implements View.OnClickLi
         LinearLayout ll = (LinearLayout) findViewById(R.id.coord);
 
         if(eventsList != null) {
-            for (Event e : eventsList) {
+            for (final Event e : eventsList) {
                 Button btn_event = new Button(this);
                 btn_event.setId(e.getId());
                 btn_event.setText(e.getName());
                 ll.addView(btn_event);
-                btn_event.setOnClickListener(this);
+                btn_event.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("event", e);
+                        startActivity(new Intent(ResultsActivity.this, MapActivity.class).putExtras(bundle));
+                    }
+                });
             }
         }
     }
 
-    @Override
-    public void onClick(View view){
-        for (Event e : eventsList) {
-            if(view.getId() == e.getId()) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("event", e);
-                startActivity(new Intent(ResultsActivity.this, MapActivity.class).putExtras(bundle));
-            }
-        }
-    }
 }

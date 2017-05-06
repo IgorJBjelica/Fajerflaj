@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +60,14 @@ public class EventsHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("BAZA", "ULAZIIII!");
         try{
-            db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+            db = SQLiteDatabase.openOrCreateDatabase(DATABASE_PATH, null);
             db.execSQL(CREATE_TABLE_USERS);
             db.execSQL(CREATE_TABLE_TAGS);
             db.execSQL(CREATE_TABLE_EVENTS);
+
+            Log.d("DB", "Is it? " + db.getPath());
 
             db.close();
         }catch (SQLiteException e){}
@@ -76,10 +78,10 @@ public class EventsHelper extends SQLiteOpenHelper {
     public boolean checkDataBase(){
         try{
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READONLY);
-        }catch(SQLiteException e){}
 
-        if(db != null)
-            db.close();
+            if(db != null)
+                db.close();
+        }catch(SQLiteException e){}
 
         return db == null;
     }
@@ -98,9 +100,14 @@ public class EventsHelper extends SQLiteOpenHelper {
     }
 
     public void insertUser(User user){
+        if(checkDataBase())
+            onCreate(db);
+
         try {
+            Log.d("baza", "Ima li je? " + checkDataBase());
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
             db = this.getWritableDatabase();
+
             ContentValues values = new ContentValues();
             values.put(COLUMN_NAME, user.getName());
             values.put(COLUMN_EMAIL, user.getEmail());
@@ -113,6 +120,9 @@ public class EventsHelper extends SQLiteOpenHelper {
     }
 
     public void insertEvent(Event event){
+        if(checkDataBase())
+            onCreate(db);
+
         try {
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
             db = this.getWritableDatabase();
@@ -130,6 +140,9 @@ public class EventsHelper extends SQLiteOpenHelper {
     }
 
     public void insertTag(Tag tag){
+        if(checkDataBase())
+            onCreate(db);
+
         try {
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
             db = this.getWritableDatabase();
@@ -197,7 +210,6 @@ public class EventsHelper extends SQLiteOpenHelper {
                     labels.add(e);
                 } while (cursor.moveToNext());
             }
-            cursor.close();
         }catch (SQLiteException e){}
         return labels;
     }

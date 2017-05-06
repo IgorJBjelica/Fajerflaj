@@ -1,9 +1,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="igor.firefly.InfoFragment">
+    android:layout_height="match_parent">
 
-    
+    <fragment
+        android:id="@+id/fragment_info"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="igor.firefly.Activity" />
 
 </FrameLayout>

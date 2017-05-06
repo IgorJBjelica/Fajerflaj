@@ -12,6 +12,8 @@ public class FillBase {
         EventsHelper db = new EventsHelper(activity);
 
         if(db.checkDataBase()) {
+            db.getWritableDatabase();
+
 //      Dodavanje korisnika Igor
             User user = new User();
             user.setName("Igor");
