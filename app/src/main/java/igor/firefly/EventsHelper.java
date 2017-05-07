@@ -350,4 +350,19 @@ public class EventsHelper extends SQLiteOpenHelper {
 
         return eventList;
     }
+
+    public List<Event> searchEventsByOrganizer(int userID) {
+        List<Event> list = getAllEvents();
+        List<Event> eventList = new ArrayList<>();
+        User user = searchUsers("", userID).get(0);
+
+        if(user != null) {
+            for (Event e : list) {
+                if (e.getOrgan() == user.getId())
+                    eventList.add(e);
+            }
+        }
+
+        return eventList;
+    }
 }

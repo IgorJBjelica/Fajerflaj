@@ -30,6 +30,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class InfoFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -113,6 +125,48 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressMekLatLng, 12.0f));
         }
     }
+
+//    protected void getLatLng(String address) {
+//        String uri = "http://maps.google.com/maps/api/geocode/json?address="
+//                + address + "&sensor=false";
+//
+//        HttpGet httpGet = new HttpGet(uri);
+//
+//        HttpClient client = new DefaultHttpClient();
+//        HttpResponse response;
+//        StringBuilder stringBuilder = new StringBuilder();
+//
+//        try {
+//            response = client.execute(httpGet);
+//            HttpEntity entity = response.getEntity();
+//
+//            InputStream stream = entity.getContent();
+//
+//            int byteData;
+//            while ((byteData = stream.read()) != -1) {
+//                stringBuilder.append((char) byteData);
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        double lat = 0.0, lng = 0.0;
+//
+//        JSONObject jsonObject;
+//        try {
+//            jsonObject = new JSONObject(stringBuilder.toString());
+//            lng = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
+//                    .getJSONObject("geometry").getJSONObject("location")
+//                    .getDouble("lng");
+//            lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
+//                    .getJSONObject("geometry").getJSONObject("location")
+//                    .getDouble("lat");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void addMarker(Location location) {
         Log.d("InfoFragment:addMarker", location + "");

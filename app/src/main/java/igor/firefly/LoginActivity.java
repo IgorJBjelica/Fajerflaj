@@ -48,11 +48,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
+     * An authentication store containing known user information.
      */
 
-    private static final List<String> DUMMY_CREDENTIALS = new ArrayList<>();
+    private static List<User> userList = new ArrayList<>();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -63,6 +62,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private boolean organ;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,17 +86,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
 //      Load all Users
-        EventsHelper helper = new EventsHelper(this);
-        List<User> userList = helper.getAllUsers();
+        EventsHelper db = new EventsHelper(this);
+        userList = db.getAllUsers();
+
         if(userList.isEmpty()) {
 //          If empty message
             showMessage("Error", "Nothing Found!");
             return;
-        }
-
-        for (User u : userList) {
-            DUMMY_CREDENTIALS.add(u.getName() + ":" + u.getPass());
-            DUMMY_CREDENTIALS.add(u.getEmail() + ":" + u.getPass());
         }
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
@@ -332,15 +329,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            for (User u : userList) {
+                if (u.getEmail().equals(mEmail) || u.getName().equals(mEmail)){
+                    organ = u.isOrgan();
+                    user = u;
+                    return u.getPass().equals(mPassword);
                 }
             }
 
-            // TODO: register the new account here.
             return false;
         }
 
@@ -350,7 +346,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                if(!organ)
+                    startActivity(new Intent(LoginActivity.this, SearchActivity.class));
+                else{
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("user", user);
+                    startActivity(new Intent(LoginActivity.this, EventsActivity.class).putExtras(bundle));
+                }
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
