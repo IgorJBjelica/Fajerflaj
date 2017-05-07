@@ -22,10 +22,13 @@ public class EventsHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "users";
     private static final String TABLE_NAME2 = "events";
     private static final String TABLE_NAME3 = "tags";
+    private static final String COLUMN_ID = "_id";
     private static final String COLUMN_NAME = "name";
     private static final String COLUMN_DESC = "description";
     private static final String COLUMN_PRICE = "price";
     private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_LAT = "latitude";
+    private static final String COLUMN_LONG = "longitude";
     private static final String COLUMN_POPULARITY = "popularity";
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_PASS = "pass";
@@ -43,7 +46,7 @@ public class EventsHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_EVENTS = "create table events (_id integer primary key autoincrement, " +
             "name text not null, description text not null, address text not null, price integer, popularity integer, " +
-            "organ integer not null, tag integer not null, " +
+            "organ integer not null, tag integer not null, latitude integer, longitude integer, " +
             "FOREIGN KEY (organ) REFERENCES users(_id), " +
             "FOREIGN KEY (tag) REFERENCES tags(Eve_id))";
 
@@ -163,12 +166,12 @@ public class EventsHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     User user = new User();
-                    user.setId(cursor.getInt(0));
-                    user.setName(cursor.getString(1));
-                    user.setEmail(cursor.getString(2));
-                    user.setPass(cursor.getString(3));
-                    user.setPhone(cursor.getString(4));
-                    switch (cursor.getInt(5)) {
+                    user.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                    user.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+                    user.setEmail(cursor.getString(cursor.getColumnIndex(COLUMN_EMAIL)));
+                    user.setPass(cursor.getString(cursor.getColumnIndex(COLUMN_PASS)));
+                    user.setPhone(cursor.getString(cursor.getColumnIndex(COLUMN_PHONE)));
+                    switch (cursor.getInt(cursor.getColumnIndex(COLUMN_ORGAN))) {
                         case 0:
                             user.setOrgan(false);
                             break;
@@ -198,14 +201,16 @@ public class EventsHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Event e = new Event();
-                    e.setId(cursor.getInt(0));
-                    e.setName(cursor.getString(1));
-                    e.setDescription(cursor.getString(2));
-                    e.setAddress(cursor.getString(3));
-                    e.setPrice(cursor.getFloat(4));
-                    e.setPopularity(cursor.getFloat(5));
-                    e.setOrgan(cursor.getInt(6));
-                    e.setTag(cursor.getInt(7));
+                    e.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                    e.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
+                    e.setDescription(cursor.getString(cursor.getColumnIndex(COLUMN_DESC)));
+                    e.setAddress(cursor.getString(cursor.getColumnIndex(COLUMN_ADDRESS)));
+                    e.setLatitude(cursor.getFloat(cursor.getColumnIndex(COLUMN_LAT)));
+                    e.setLongitude(cursor.getFloat(cursor.getColumnIndex(COLUMN_LONG)));
+                    e.setPrice(cursor.getFloat(cursor.getColumnIndex(COLUMN_PRICE)));
+                    e.setPopularity(cursor.getFloat(cursor.getColumnIndex(COLUMN_POPULARITY)));
+                    e.setOrgan(cursor.getInt(cursor.getColumnIndex(COLUMN_ORGAN)));
+                    e.setTag(cursor.getInt(cursor.getColumnIndex(COLUMN_TAG)));
 
                     labels.add(e);
                 } while (cursor.moveToNext());
@@ -224,8 +229,8 @@ public class EventsHelper extends SQLiteOpenHelper {
             if (cursor.moveToFirst()) {
                 do {
                     Tag tag = new Tag();
-                    tag.setId(cursor.getInt(0));
-                    tag.setName(cursor.getString(1));
+                    tag.setId(cursor.getInt(cursor.getColumnIndex(COLUMN_ID)));
+                    tag.setName(cursor.getString(cursor.getColumnIndex(COLUMN_NAME)));
 
                     tagList.add(tag);
                 } while (cursor.moveToNext());

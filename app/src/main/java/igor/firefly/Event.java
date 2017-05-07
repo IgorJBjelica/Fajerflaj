@@ -12,6 +12,8 @@ public class Event implements Parcelable {
     private String name;
     private String description;
     private String address;
+    private float latitude;
+    private float longitude;
     private float price;
     private float popularity;
     private int organ_id;
@@ -105,6 +107,22 @@ public class Event implements Parcelable {
 
     public void setTag(int tag_id) {
         this.tag_id = tag_id;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
     }
 
     public int describeContents() {
