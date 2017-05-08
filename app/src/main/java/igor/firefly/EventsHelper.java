@@ -63,14 +63,11 @@ public class EventsHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("BAZA", "ULAZIIII!");
         try{
             db = SQLiteDatabase.openOrCreateDatabase(DATABASE_PATH, null);
             db.execSQL(CREATE_TABLE_USERS);
             db.execSQL(CREATE_TABLE_TAGS);
             db.execSQL(CREATE_TABLE_EVENTS);
-
-            Log.d("DB", "Is it? " + db.getPath());
 
             db.close();
         }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
@@ -107,7 +104,6 @@ public class EventsHelper extends SQLiteOpenHelper {
             onCreate(db);
 
         try {
-            Log.d("baza", "Ima li je? " + checkDataBase());
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
             db = this.getWritableDatabase();
 

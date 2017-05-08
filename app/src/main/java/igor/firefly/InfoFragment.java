@@ -1,7 +1,6 @@
 package igor.firefly;
 
 import android.Manifest;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -11,7 +10,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +117,6 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         provider = locationManager.getBestProvider(criteria, true);
         Bundle bundle = this.getActivity().getIntent().getExtras();
         event = bundle.getParcelable("event");
-        showMessage("Event: LatLng:", " " + event.getLatitude() + " " + event.getLongitude());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -154,7 +151,7 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         }
 
         home = mMap.addMarker(new MarkerOptions()
-                .title("Nalazite se ovde")
+                .title("This is you")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                 .position(loc));
         home.setFlat(true);
@@ -267,12 +264,4 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
 
         }
     };
-
-    private void showMessage(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
-    }
 }

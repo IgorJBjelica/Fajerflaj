@@ -1,7 +1,6 @@
 package igor.firefly;
 
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +22,6 @@ public class ResultsActivity extends AppCompatActivity {
 
         if(eventsList != null) {
             for (final Event e : eventsList) {
-                showMessage("LatLng:", e.getName() + e.getLatitude() + " " + e.getLongitude());
                 Button btn_event = new Button(this);
                 btn_event.setId(e.getId());
                 btn_event.setText(e.getName());
@@ -38,13 +36,5 @@ public class ResultsActivity extends AppCompatActivity {
                 });
             }
         }
-    }
-
-    private void showMessage(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.show();
     }
 }

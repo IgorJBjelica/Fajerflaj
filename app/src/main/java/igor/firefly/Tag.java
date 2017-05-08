@@ -1,7 +1,5 @@
 package igor.firefly;
 
-import java.util.List;
-
 /**
  * Created by Igor on 4/5/2017.
  */
@@ -9,7 +7,6 @@ import java.util.List;
 public class Tag {
     private int id;
     private String name;
-    private List<Event> events;
 
 
     public int getId() {
@@ -26,13 +23,5 @@ public class Tag {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(List<Event> events) {
-        this.events = events;
     }
 }
