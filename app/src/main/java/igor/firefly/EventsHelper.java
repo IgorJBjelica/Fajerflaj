@@ -365,4 +365,6 @@ public class EventsHelper extends SQLiteOpenHelper {
 
         return eventList;
     }
+
+//    TODO: Update event in database
 }

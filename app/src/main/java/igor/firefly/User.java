@@ -86,7 +86,6 @@ public class User implements Parcelable {
     }
 
     public int describeContents() {
-        // TODO Auto-generated method stub
         return 0;
     }
     public void writeToParcel(Parcel dest, int flags) {

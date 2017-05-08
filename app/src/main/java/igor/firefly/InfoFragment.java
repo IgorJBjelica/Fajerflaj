@@ -3,6 +3,7 @@ package igor.firefly;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,13 +16,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -29,18 +36,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class InfoFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -53,12 +55,18 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
     private Marker home;
     private LocationRequest locationRequest;
     private GoogleApiClient googleApiClient;
+    private Event event;
+    private Location startLocation;
+    private Location endLocation;
+    private Location currentLocation;
+    private boolean hasDirection = false;
+
+    private RequestQueue requestQueue;
 
     public InfoFragment() {
         super();
         getMapAsync(this);
     }
-
 
     protected synchronized void buildGoogleApiClient() {
         googleApiClient = new GoogleApiClient.Builder(getActivity())
@@ -81,33 +89,41 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
     }
 
     @Override
-    public void onConnectionSuspended(int i) {}
+    public void onConnectionSuspended(int i) {
+    }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {}
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
 
     @Override
     public void onLocationChanged(Location location) {
-        if (home != null) {
-            home.remove();
+        Log.d("InfoFragment", "onLocationChanged");
+        currentLocation = location;
+        if (startLocation == null) {
+            startLocation = location;
         }
         if (mMap != null) {
             addMarker(location);
         }
+        showDirection();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        requestQueue = Volley.newRequestQueue(getActivity());
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, true);
+        Bundle bundle = this.getActivity().getIntent().getExtras();
+        event = bundle.getParcelable("event");
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("InfoFragment","onMapReady");
+        Log.d("InfoFragment", "onMapReady");
         mMap = googleMap;
         if (googleMap != null) {
             mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -120,53 +136,12 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
                 buildGoogleApiClient();
                 mMap.setMyLocationEnabled(true);
             }
-            LatLng addressMekLatLng = new LatLng(44.810002,20.466493);
-            mMap.addMarker(new MarkerOptions().title("Kineski restoran 88").position(addressMekLatLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(addressMekLatLng, 12.0f));
+            String locUrl = Util.getLocationUrl(event.getAddress() + ", Belgrade, Serbia");
+            Log.d("InfoFragment", "locUrl=" + locUrl);
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, locUrl, null, locationResponseListener, locationErrorResponseListener);
+            requestQueue.add(jsObjRequest);
         }
     }
-
-//    protected void getLatLng(String address) {
-//        String uri = "http://maps.google.com/maps/api/geocode/json?address="
-//                + address + "&sensor=false";
-//
-//        HttpGet httpGet = new HttpGet(uri);
-//
-//        HttpClient client = new DefaultHttpClient();
-//        HttpResponse response;
-//        StringBuilder stringBuilder = new StringBuilder();
-//
-//        try {
-//            response = client.execute(httpGet);
-//            HttpEntity entity = response.getEntity();
-//
-//            InputStream stream = entity.getContent();
-//
-//            int byteData;
-//            while ((byteData = stream.read()) != -1) {
-//                stringBuilder.append((char) byteData);
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        double lat = 0.0, lng = 0.0;
-//
-//        JSONObject jsonObject;
-//        try {
-//            jsonObject = new JSONObject(stringBuilder.toString());
-//            lng = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
-//                    .getJSONObject("geometry").getJSONObject("location")
-//                    .getDouble("lng");
-//            lat = ((JSONArray) jsonObject.get("results")).getJSONObject(0)
-//                    .getJSONObject("geometry").getJSONObject("location")
-//                    .getDouble("lat");
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void addMarker(Location location) {
         Log.d("InfoFragment:addMarker", location + "");
@@ -182,9 +157,7 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
                 .position(loc));
         home.setFlat(true);
         home.showInfoWindow();
-
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(12.0f).build();
-
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(loc).zoom(15).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 
@@ -192,7 +165,7 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0	&& grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, do location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         if (googleApiClient == null) {
@@ -208,5 +181,84 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         }
     }
 
+    private Response.Listener<JSONObject> locationResponseListener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            Log.d("InfoFragment", "locationResponseListener");
+            LatLng addressLocation = Util.parseLocationResponse(response);
+            Log.d("InfoFragment", "addressLocation=" + addressLocation);
+            // TODO save this location into event/database
+            //
+            if (mMap != null) {
+                mMap.addMarker(new MarkerOptions().title(event.getName()).position(addressLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(addressLocation, 15));
+                endLocation = new Location(provider);
+                endLocation.setLatitude(addressLocation.latitude);
+                endLocation.setLongitude(addressLocation.longitude);
+            }
+            showDirection();
+        }
+    };
+
+    private void showDirection() {
+        if (startLocation != null && endLocation != null && !hasDirection) {
+            // get directions
+            String dirUrl = Util.getDirectionsUrl(startLocation, endLocation);
+            Log.d("InfoFragment", "dirUrl=" + dirUrl);
+            JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, dirUrl, null, directionResponseListener, directionErrorResponseListener);
+            requestQueue.add(jsObjRequest);
+        }
+    }
+
+
+    private Response.ErrorListener locationErrorResponseListener = new Response.ErrorListener() {
+        @Override
+        // Handles errors that occur due to Volley
+        public void onErrorResponse(VolleyError error) {
+            Log.e("InfoFragment", "locationErrorResponseListener" + error);
+
+        }
+    };
+
+    private Response.Listener<JSONObject> directionResponseListener = new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject response) {
+            Log.d("InfoFragment", "directionResponseListener");
+            if (mMap != null) {
+                List<List<HashMap<String, String>>> result = Util.parse(response);
+                if (!Util.isNullOrEmpty(result)) {
+                    ArrayList<LatLng> points = null;
+                    PolylineOptions lineOptions = null;
+                    // Traversing through all the routes
+                    for (List<HashMap<String, String>> path : result) {
+                        points = new ArrayList<LatLng>();
+                        lineOptions = new PolylineOptions();
+                        for (HashMap<String, String> point : path) {
+                            double lat = Double.parseDouble(point.get("lat"));
+                            double lng = Double.parseDouble(point.get("lng"));
+                            LatLng position = new LatLng(lat, lng);
+                            points.add(position);
+                        }
+                        // Adding all the points in the route to LineOptions
+                        lineOptions.addAll(points);
+                        lineOptions.width(5);
+                        lineOptions.color(Color.RED);
+                    }
+                    // Drawing polyline in the Google Map for the i-th route
+                    mMap.addPolyline(lineOptions);
+                }
+                hasDirection = true;
+            }
+        }
+    };
+
+    private Response.ErrorListener directionErrorResponseListener = new Response.ErrorListener() {
+        @Override
+        // Handles errors that occur due to Volley
+        public void onErrorResponse(VolleyError error) {
+            Log.e("InfoFragment", "directionErrorResponseListener" + error);
+
+        }
+    };
 
 }
