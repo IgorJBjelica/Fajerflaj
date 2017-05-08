@@ -1,5 +1,6 @@
 package igor.firefly;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -10,20 +11,48 @@ import android.widget.LinearLayout;
 
 import java.util.List;
 
-public class EventsActivity extends AppCompatActivity {
+public class EventsActivity extends AppCompatActivity{
+
+    private LinearLayout ll;
+    private EventsHelper db;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events);
 
+        Button newEvent = (Button) findViewById(R.id.new_Event);
         Bundle getBundle = this.getIntent().getExtras();
-        User user = getBundle.getParcelable("user");
-        LinearLayout ll = (LinearLayout) findViewById(R.id.ll);
+        final User u = getBundle.getParcelable("user");
+        user = u;
 
-        EventsHelper db = new EventsHelper(this);
+        newEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", u);
+                startActivityForResult(new Intent(EventsActivity.this, AddEvent.class).putExtras(bundle), 1);
+            }
+        });
+
+        ll = (LinearLayout) findViewById(R.id.ll);
+        db = new EventsHelper(this);
+        loadEvents();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1)
+            if(resultCode == Activity.RESULT_OK)
+                loadEvents();
+    }
+
+    private void loadEvents(){
         List<Event> eventsList;
-        
+        ll.removeAllViewsInLayout();
+
         if(user == null)
             showMessage("User error!", "No user info available!");
         else {
@@ -40,7 +69,7 @@ public class EventsActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("event", e);
-                            startActivity(new Intent(EventsActivity.this, AddEvent.class).putExtras(bundle));
+                            startActivity(new Intent(EventsActivity.this, UpdateEventActivity.class).putExtras(bundle));
                         }
                     });
                 }

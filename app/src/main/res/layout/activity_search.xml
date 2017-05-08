@@ -22,7 +22,7 @@ android:layout_height="match_parent">
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/pretraga"
+                android:text="@string/str_search"
                 android:textAlignment="center"
                 android:textColor="@android:color/black"
                 android:textSize="24sp" />
@@ -42,7 +42,7 @@ android:layout_height="match_parent">
                 android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/free_text_search"
-                android:inputType="textPersonName"
+                android:inputType="textShortMessage"
                 android:textColor="@android:color/black"
                 android:textColorHint="@android:color/darker_gray" />
 
@@ -95,7 +95,7 @@ android:layout_height="match_parent">
                 android:orientation="vertical">
 
                 <SeekBar
-                    android:id="@+id/seekBarMinCena"
+                    android:id="@+id/seekBarMinPrice"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -116,16 +116,16 @@ android:layout_height="match_parent">
                         android:layout_weight="1"
                         android:ems="10"
                         android:textAlignment="center"
-                        android:text="Min Cena:" />
+                        android:text="@string/min_price" />
 
                     <EditText
-                        android:id="@+id/editTextMinCena"
+                        android:id="@+id/editTextMinPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
                         android:textAlignment="textEnd"
-                        android:inputType="textPersonName|number" />
+                        android:inputType="number" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -137,7 +137,7 @@ android:layout_height="match_parent">
                 android:orientation="vertical">
 
                 <SeekBar
-                    android:id="@+id/seekBarMaxCena"
+                    android:id="@+id/seekBarMaxPrice"
                     style="@style/Widget.AppCompat.SeekBar.Discrete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -158,16 +158,16 @@ android:layout_height="match_parent">
                         android:layout_weight="1"
                         android:ems="10"
                         android:textAlignment="center"
-                        android:text="Max Cena:" />
+                        android:text="@string/max_price" />
 
                     <EditText
-                        android:id="@+id/editTextMaxCena"
+                        android:id="@+id/editTextMaxPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
                         android:textAlignment="textEnd"
-                        android:inputType="textPersonName|number" />
+                        android:inputType="number" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -216,7 +216,7 @@ android:layout_height="match_parent">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/pokreni" />
+                android:text="@string/start" />
 
             <Button
                 android:id="@+id/btnReset"
@@ -224,7 +224,7 @@ android:layout_height="match_parent">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/resetuj" />
+                android:text="@string/reset" />
         </LinearLayout>
 
     </LinearLayout>

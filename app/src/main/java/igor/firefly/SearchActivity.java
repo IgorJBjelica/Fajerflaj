@@ -35,15 +35,15 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        mSeekBarMin = (SeekBar) findViewById(R.id.seekBarMinCena);
+        mSeekBarMin = (SeekBar) findViewById(R.id.seekBarMinPrice);
         mSeekBarMin.setOnSeekBarChangeListener(this);
 
-        mSeekBarMax = (SeekBar) findViewById(R.id.seekBarMaxCena);
+        mSeekBarMax = (SeekBar) findViewById(R.id.seekBarMaxPrice);
         mSeekBarMax.setOnSeekBarChangeListener(this);
 
         mEditText = (EditText) findViewById(R.id.editText);
-        mEditText2 = (EditText) findViewById(R.id.editTextMinCena);
-        mEditText3 = (EditText) findViewById(R.id.editTextMaxCena);
+        mEditText2 = (EditText) findViewById(R.id.editTextMinPrice);
+        mEditText3 = (EditText) findViewById(R.id.editTextMaxPrice);
 
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
         mSeekBar.setOnSeekBarChangeListener(this);
@@ -109,7 +109,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         minPrice = Float.parseFloat(mEditText2.getText().toString().equals("") ? "0": mEditText2.getText().toString());
         maxPrice = Float.parseFloat(mEditText3.getText().toString().equals("") ? "0": mEditText3.getText().toString());
         if(minPrice > maxPrice) {
-            showMessage("Greska!", "Minimalna cena ne sme biti veca od maksimalne!");
+            showMessage("Error!", "Minimal price cannot be greater than maximum price!");
             return false;
         }
         return true;
@@ -161,11 +161,11 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 mTextView.setText(String.valueOf(Integer.valueOf(progress)).concat(" km"));
                 break;
             }
-            case R.id.seekBarMinCena:{
+            case R.id.seekBarMinPrice:{
                 mEditText2.setText(String.valueOf(Integer.valueOf(progress)));
                 break;
             }
-            case R.id.seekBarMaxCena:{
+            case R.id.seekBarMaxPrice:{
                 mEditText3.setText(String.valueOf(Integer.valueOf(progress)));
                 break;
             }

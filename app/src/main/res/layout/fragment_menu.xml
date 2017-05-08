@@ -89,6 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:focusableInTouchMode="false"
+                android:maxLines="5"
                 android:textAlignment="center"
                 android:textColor="@android:color/black" />
 
