@@ -28,6 +28,8 @@ public class Event implements Parcelable {
         this.setName(name);
         this.setDescription(description);
         this.setAddress(address);
+        this.setLatitude(0.0f);
+        this.setLongitude(0.0f);
         this.setPrice(price);
         this.setPopularity(popularity);
         this.setOrgan(organ_id);
@@ -39,6 +41,8 @@ public class Event implements Parcelable {
         this.setName(in.readString());
         this.setDescription(in.readString());
         this.setAddress(in.readString());
+        this.setLatitude(in.readFloat());
+        this.setLongitude(in.readFloat());
         this.setPrice(in.readFloat());
         this.setPopularity(in.readFloat());
         this.setOrgan(in.readInt());
@@ -133,6 +137,8 @@ public class Event implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.description);
         dest.writeString(this.address);
+        dest.writeFloat(this.latitude);
+        dest.writeFloat(this.longitude);
         dest.writeFloat(this.price);
         dest.writeFloat(this.popularity);
         dest.writeInt(this.organ_id);

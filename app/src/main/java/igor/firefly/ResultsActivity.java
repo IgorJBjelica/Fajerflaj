@@ -1,6 +1,7 @@
 package igor.firefly;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,19 +12,18 @@ import java.util.ArrayList;
 
 public class ResultsActivity extends AppCompatActivity {
 
-    private ArrayList<Event> eventsList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
         Bundle getBundle = this.getIntent().getExtras();
-        eventsList = getBundle.getParcelableArrayList("list");
+        ArrayList<Event> eventsList = getBundle.getParcelableArrayList("list");
         LinearLayout ll = (LinearLayout) findViewById(R.id.coord);
 
         if(eventsList != null) {
             for (final Event e : eventsList) {
+                showMessage("LatLng:", e.getName() + e.getLatitude() + " " + e.getLongitude());
                 Button btn_event = new Button(this);
                 btn_event.setId(e.getId());
                 btn_event.setText(e.getName());
@@ -40,4 +40,11 @@ public class ResultsActivity extends AppCompatActivity {
         }
     }
 
+    private void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
 }

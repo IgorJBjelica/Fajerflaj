@@ -1,7 +1,16 @@
 package igor.firefly;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,10 +22,17 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private EditText mEditText;
     private EditText mEditText2;
@@ -29,6 +45,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     private float minPrice;
     private SeekBar mSeekBarMax;
     private float maxPrice;
+
+    private LocationManager locationManager;
+    private Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private String provider;
+    private RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +83,27 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         mSpinner = (Spinner) findViewById(R.id.simple_spinner);
         loadSpinnerData();
+
+        buildGoogleApiClient();
+
+        requestQueue = Volley.newRequestQueue(this);
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, true);
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
     }
 
     private void loadSpinnerData() {
@@ -70,7 +113,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         tagsList.add("Tip desavanja");
 
-        for (Tag t: tags){
+        for (Tag t : tags) {
             tagsList.add(t.getName());
         }
 
@@ -81,8 +124,8 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onClick(View view){
-        switch (view.getId()){
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btnSearch:
                 searchEvents();
                 break;
@@ -92,7 +135,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void resetActivity(){
+    private void resetActivity() {
         mSeekBar.setProgress(0);
         mSeekBarMin.setProgress(0);
         mSeekBarMax.setProgress(0);
@@ -101,22 +144,22 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         mEditText3.setText("");
         mRatingBar.setProgress(0);
         mSpinner.setSelection(0, true);
-        mTextView.setText("");
+        mTextView.setText("0 km");
     }
 
-    private boolean testValues(){
+    private boolean testValues() {
         ///////////////////////////////Put in test values of all variables/////////////////////////////////////////////
-        minPrice = Float.parseFloat(mEditText2.getText().toString().equals("") ? "0": mEditText2.getText().toString());
-        maxPrice = Float.parseFloat(mEditText3.getText().toString().equals("") ? "0": mEditText3.getText().toString());
-        if(minPrice > maxPrice) {
+        minPrice = Float.parseFloat(mEditText2.getText().toString().equals("") ? "0" : mEditText2.getText().toString());
+        maxPrice = Float.parseFloat(mEditText3.getText().toString().equals("") ? "0" : mEditText3.getText().toString());
+        if (minPrice > maxPrice) {
             showMessage("Error!", "Minimal price cannot be greater than maximum price!");
             return false;
         }
         return true;
     }
 
-    private void searchEvents(){
-        if(testValues()) {
+    private void searchEvents() {
+        if (testValues()) {
             EventsHelper db = new EventsHelper(this);
             List<Event> eventsList = db.getAllEvents();
 
@@ -124,12 +167,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             if (!freeText.trim().isEmpty() || !freeText.trim().equals("")) {
                 List<Event> list = db.searchEventsByName(eventsList, freeText);
 
-                for( Event e : db.searchEventsByAddress(eventsList, freeText))
-                    if(!list.contains(e))
+                for (Event e : db.searchEventsByAddress(eventsList, freeText))
+                    if (!list.contains(e))
                         list.add(e);
 
-                for( Event e : db.searchEventsByDescription(eventsList, freeText))
-                    if(!list.contains(e))
+                for (Event e : db.searchEventsByDescription(eventsList, freeText))
+                    if (!list.contains(e))
                         list.add(e);
 
                 eventsList = list;
@@ -147,6 +190,20 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
                 eventsList = db.searchEventsByTag(eventsList, tag);
 
             float distance = mSeekBar.getProgress();
+            if (distance != 0) {
+                List<Event> list = new ArrayList<>();
+                for (Event e : eventsList) {
+                    if (e.getLatitude() != 0 && e.getLongitude() != 0) {
+                        Location dLoc = new Location(provider);
+                        dLoc.setLatitude(e.getLatitude());
+                        dLoc.setLongitude(e.getLongitude());
+
+                        if (mLastLocation.distanceTo(dLoc) <= distance * 1000)
+                            list.add(e);
+                    }
+                }
+                eventsList = list;
+            }
 
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList("list", (ArrayList<Event>) eventsList);
@@ -155,17 +212,17 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onProgressChanged(SeekBar mSB, int progress, boolean fromUser){
-        switch (mSB.getId()){
-            case R.id.seekBar:{
+    public void onProgressChanged(SeekBar mSB, int progress, boolean fromUser) {
+        switch (mSB.getId()) {
+            case R.id.seekBar: {
                 mTextView.setText(String.valueOf(Integer.valueOf(progress)).concat(" km"));
                 break;
             }
-            case R.id.seekBarMinPrice:{
+            case R.id.seekBarMinPrice: {
                 mEditText2.setText(String.valueOf(Integer.valueOf(progress)));
                 break;
             }
-            case R.id.seekBarMaxPrice:{
+            case R.id.seekBarMaxPrice: {
                 mEditText3.setText(String.valueOf(Integer.valueOf(progress)));
                 break;
             }
@@ -179,6 +236,28 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onStopTrackingTouch(SeekBar mSeekBar) {
+
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 

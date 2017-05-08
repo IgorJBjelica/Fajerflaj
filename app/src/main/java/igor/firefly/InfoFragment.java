@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -118,6 +119,7 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         provider = locationManager.getBestProvider(criteria, true);
         Bundle bundle = this.getActivity().getIntent().getExtras();
         event = bundle.getParcelable("event");
+        showMessage("Event: LatLng:", " " + event.getLatitude() + " " + event.getLongitude());
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -187,9 +189,9 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
             Log.d("InfoFragment", "locationResponseListener");
             LatLng addressLocation = Util.parseLocationResponse(response);
             Log.d("InfoFragment", "addressLocation=" + addressLocation);
-            
+
             EventsHelper db = new EventsHelper(getContext());
-            if (event.getLatitude() != 0 && event.getLongitude() != 0)
+            if (event.getLatitude() == 0 && event.getLongitude() == 0)
                 db.updateEventLatLng(event.getId(), addressLocation.latitude, addressLocation.longitude);
             else
                 Log.d("LatLng", "Did not update Latitude and Longitude in the database, because values already exist.");
@@ -266,4 +268,11 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
         }
     };
 
+    private void showMessage(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.show();
+    }
 }

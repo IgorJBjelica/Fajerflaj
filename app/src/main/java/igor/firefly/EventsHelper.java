@@ -137,6 +137,8 @@ public class EventsHelper extends SQLiteOpenHelper {
             values.put(COLUMN_POPULARITY, event.getPopularity());
             values.put(COLUMN_TAG, event.getTag());
             values.put(COLUMN_ORGAN, event.getOrgan());
+            values.put(COLUMN_LAT, event.getLatitude());
+            values.put(COLUMN_LONG, event.getLongitude());
 
             db.insert(TABLE_NAME2, null, values);
         }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
@@ -237,7 +239,7 @@ public class EventsHelper extends SQLiteOpenHelper {
     }
 
     public List<Event> getAllEvents() {
-        List<Event> labels = new ArrayList<>();
+        List<Event> list = new ArrayList<>();
 
         try {
             db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READONLY);
@@ -257,12 +259,12 @@ public class EventsHelper extends SQLiteOpenHelper {
                     e.setOrgan(cursor.getInt(cursor.getColumnIndex(COLUMN_ORGAN)));
                     e.setTag(cursor.getInt(cursor.getColumnIndex(COLUMN_TAG)));
 
-                    labels.add(e);
+                    list.add(e);
                 } while (cursor.moveToNext());
             }
             cursor.close();
         }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
-        return labels;
+        return list;
     }
 
     public List<Tag> getAllTags() {

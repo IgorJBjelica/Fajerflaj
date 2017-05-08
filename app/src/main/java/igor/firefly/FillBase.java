@@ -54,6 +54,8 @@ public class FillBase {
             event.setPrice(3.5f);
             event.setOrgan(2);
             event.setTag(1);
+            event.setLatitude(0.0f);
+            event.setLongitude(0.0f);
 
             db.insertEvent(event);
 
@@ -64,6 +66,8 @@ public class FillBase {
             event.setPrice(2.8f);
             event.setOrgan(2);
             event.setTag(1);
+            event.setLatitude(0.0f);
+            event.setLongitude(0.0f);
 
             db.insertEvent(event);
 
@@ -74,6 +78,8 @@ public class FillBase {
             event.setPrice(3.3f);
             event.setOrgan(2);
             event.setTag(1);
+            event.setLatitude(0.0f);
+            event.setLongitude(0.0f);
 
             db.insertEvent(event);
 
@@ -84,6 +90,8 @@ public class FillBase {
             event.setPrice(3.0f);
             event.setOrgan(2);
             event.setTag(3);
+            event.setLatitude(0.0f);
+            event.setLongitude(0.0f);
 
             db.insertEvent(event);
 
@@ -94,6 +102,8 @@ public class FillBase {
             event.setPrice(0.0f);
             event.setOrgan(2);
             event.setTag(2);
+            event.setLatitude(0.0f);
+            event.setLongitude(0.0f);
 
             db.insertEvent(event);
         }

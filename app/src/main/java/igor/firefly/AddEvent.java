@@ -137,6 +137,9 @@ public class AddEvent extends AppCompatActivity implements View.OnClickListener 
                 return false;
         }
 
+        event.setLatitude(0.0f);
+        event.setLongitude(0.0f);
+
         if (user != null)
             event.setOrgan(user.getId());
         else{
