@@ -187,8 +187,7 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
             Log.d("InfoFragment", "locationResponseListener");
             LatLng addressLocation = Util.parseLocationResponse(response);
             Log.d("InfoFragment", "addressLocation=" + addressLocation);
-            // TODO save this location into event/database
-            //
+            
             EventsHelper db = new EventsHelper(getContext());
             if (event.getLatitude() != 0 && event.getLongitude() != 0)
                 db.updateEventLatLng(event.getId(), addressLocation.latitude, addressLocation.longitude);
