@@ -73,7 +73,7 @@ public class EventsHelper extends SQLiteOpenHelper {
             Log.d("DB", "Is it? " + db.getPath());
 
             db.close();
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
 
         Log.d("Create users: ", "Creating complete");
     }
@@ -84,7 +84,7 @@ public class EventsHelper extends SQLiteOpenHelper {
 
             if(db != null)
                 db.close();
-        }catch(SQLiteException e){}
+        }catch(SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
 
         return db == null;
     }
@@ -99,7 +99,7 @@ public class EventsHelper extends SQLiteOpenHelper {
             if (oldVersion < 3) {
                 db.execSQL(DATABASE_ALTER_EVENTS_2);
             }
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
     }
 
     public void insertUser(User user){
@@ -119,7 +119,7 @@ public class EventsHelper extends SQLiteOpenHelper {
             values.put(COLUMN_ORGAN, user.isOrgan());
 
             db.insert(TABLE_NAME, null, values);
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
     }
 
     public void insertEvent(Event event){
@@ -139,7 +139,7 @@ public class EventsHelper extends SQLiteOpenHelper {
             values.put(COLUMN_ORGAN, event.getOrgan());
 
             db.insert(TABLE_NAME2, null, values);
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
     }
 
     public void insertTag(Tag tag){
@@ -153,7 +153,52 @@ public class EventsHelper extends SQLiteOpenHelper {
             values.put(COLUMN_NAME, tag.getName());
 
             db.insert(TABLE_NAME3, null, values);
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
+    }
+
+    public void updateEvent(int id, String name, String address, String desc, float price, int tag){
+        try {
+            db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+
+            if (!name.equals("")){
+                cv.put("name", name);
+            }
+            if (!address.equals("")){
+                cv.put("address", address);
+                cv.put("latitude", 0);
+                cv.put("longitude", 0);
+            }
+            if (!desc.equals("")){
+                cv.put("description", desc);
+            }
+            if (price >= 0.0f && price <= 5.0f){
+                cv.put("price", price);
+            }
+            if (tag > 0){
+                cv.put("tag", tag);
+            }
+
+            db.update("events", cv, "_id=" + id, null);
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
+    }
+
+    public  void updateEventLatLng(int id, double latitude, double longitude){
+        try {
+            db = SQLiteDatabase.openDatabase(DATABASE_PATH, null, SQLiteDatabase.OPEN_READWRITE);
+            db = this.getWritableDatabase();
+            ContentValues cv = new ContentValues();
+
+            if (latitude > 0.0){
+                cv.put("latitude", latitude);
+            }
+            if (longitude > 0.0){
+                cv.put("longitude", longitude);
+            }
+
+            db.update("events", cv, "_id=" + id, null);
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
     }
 
     public List<User> getAllUsers() {
@@ -187,7 +232,7 @@ public class EventsHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-        }catch(SQLiteException e){}
+        }catch(SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
         return userList;
     }
 
@@ -215,7 +260,8 @@ public class EventsHelper extends SQLiteOpenHelper {
                     labels.add(e);
                 } while (cursor.moveToNext());
             }
-        }catch (SQLiteException e){}
+            cursor.close();
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
         return labels;
     }
 
@@ -236,7 +282,7 @@ public class EventsHelper extends SQLiteOpenHelper {
                 } while (cursor.moveToNext());
             }
             cursor.close();
-        }catch (SQLiteException e){}
+        }catch (SQLiteException e){Log.d("SQLiteException", "Sqlite error!");}
         return tagList;
     }
 
@@ -365,6 +411,4 @@ public class EventsHelper extends SQLiteOpenHelper {
 
         return eventList;
     }
-
-//    TODO: Update event in database
 }

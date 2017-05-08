@@ -54,7 +54,7 @@ public class AddEvent extends AppCompatActivity implements View.OnClickListener 
         List<Tag> tags = db.getAllTags();
         List<String> tagsList = new ArrayList<>();
 
-        tagsList.add("Tip desavanja");
+        tagsList.add("Event tag");
 
         for (Tag t: tags){
             tagsList.add(t.getName());
@@ -113,7 +113,7 @@ public class AddEvent extends AppCompatActivity implements View.OnClickListener 
         }
         event.setDescription(mDesc.getText().toString());
 
-        if (price > 0.0f || price < 5.0f){
+        if (price >= 0.0f && price <= 5.0f){
             event.setPrice(Float.parseFloat(mPrice.getText().toString()));
         }
         else{
@@ -128,7 +128,7 @@ public class AddEvent extends AppCompatActivity implements View.OnClickListener 
             case "Razonoda":
                 event.setTag(mSpinner.getSelectedItemPosition());
                 break;
-            case "Tip desavanja":
+            case "Event tag":
                 TextView errorText = (TextView)mSpinner.getSelectedView();
                 errorText.setError("");
                 errorText.setTextColor(Color.RED);

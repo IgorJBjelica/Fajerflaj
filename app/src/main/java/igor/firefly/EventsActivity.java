@@ -43,7 +43,6 @@ public class EventsActivity extends AppCompatActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == 1)
             if(resultCode == Activity.RESULT_OK)
                 loadEvents();
@@ -69,7 +68,7 @@ public class EventsActivity extends AppCompatActivity{
                         public void onClick(View view) {
                             Bundle bundle = new Bundle();
                             bundle.putParcelable("event", e);
-                            startActivity(new Intent(EventsActivity.this, UpdateEventActivity.class).putExtras(bundle));
+                            startActivityForResult(new Intent(EventsActivity.this, UpdateEventActivity.class).putExtras(bundle), 1);
                         }
                     });
                 }

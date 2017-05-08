@@ -1,6 +1,7 @@
 package igor.firefly;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -60,7 +61,6 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
     private Location endLocation;
     private Location currentLocation;
     private boolean hasDirection = false;
-
     private RequestQueue requestQueue;
 
     public InfoFragment() {
@@ -189,6 +189,12 @@ public class InfoFragment extends SupportMapFragment implements OnMapReadyCallba
             Log.d("InfoFragment", "addressLocation=" + addressLocation);
             // TODO save this location into event/database
             //
+            EventsHelper db = new EventsHelper(getContext());
+            if (event.getLatitude() != 0 && event.getLongitude() != 0)
+                db.updateEventLatLng(event.getId(), addressLocation.latitude, addressLocation.longitude);
+            else
+                Log.d("LatLng", "Did not update Latitude and Longitude in the database, because values already exist.");
+
             if (mMap != null) {
                 mMap.addMarker(new MarkerOptions().title(event.getName()).position(addressLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(addressLocation, 15));

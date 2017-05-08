@@ -43,7 +43,7 @@ public class Util {
     public static LatLng parseLocationResponse(JSONObject jsonObject) {
         Double lon = new Double(0);
         Double lat = new Double(0);
-        // IT MESSES UP HERE, index out of range [0..0) on getJSONObject
+
         try {
             lon = ((JSONArray)jsonObject.get("results")).getJSONObject(0)
                     .getJSONObject("geometry").getJSONObject("location")
