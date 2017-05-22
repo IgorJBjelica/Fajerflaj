@@ -1,7 +1,6 @@
 package igor.firefly;
 
 import android.app.Activity;
-import android.util.Log;
 
 /**
  * Created by Igor on 4/5/2017.
@@ -14,8 +13,24 @@ public class FillBase {
         if(db.checkDataBase()) {
             db.getWritableDatabase();
 
-//      Dodavanje korisnika Igor
+//       Dodavanje korisnika Kalina
             User user = new User();
+            user.setName("Kalina");
+            user.setEmail("KalinaG@gmail.com");
+            user.setPass("seleg");
+            user.setOrgan(true);
+
+            db.insertUser(user);
+
+//       Dodavanje korisnika Jana
+            user.setName("Jana");
+            user.setEmail("janaB@gmail.com");
+            user.setPass("janab");
+            user.setOrgan(false);
+
+            db.insertUser(user);
+
+//      Dodavanje korisnika Igor
             user.setName("Igor");
             user.setEmail("igorjbjelica@gmail.com");
             user.setPass("igorj");
